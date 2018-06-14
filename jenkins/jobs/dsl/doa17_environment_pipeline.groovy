@@ -101,7 +101,6 @@ doa17CreateApplication.with{
   }
   parameters{
     stringParam("AWS_REGION",'',"Default AWS Region")
-    stringParam("AWS_REGION",'us-east-1',"Default AWS Region")
     stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
     stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
 
@@ -143,7 +142,6 @@ doa17CreateDevelopmentGroup.with{
   }
   parameters{
     stringParam("AWS_REGION",'',"Default AWS Region")
-stringParam("AWS_REGION",'us-east-1',"Default AWS Region")
     stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
     stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
 
@@ -186,7 +184,6 @@ doa17CreateProductionGroup.with{
   }
   parameters{
     stringParam("AWS_REGION",'',"Default AWS Region")
-stringParam("AWS_REGION",'us-east-1',"Default AWS Region")
     stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
     stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
 
