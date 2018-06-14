@@ -97,9 +97,10 @@ doa17CreateApplication.with{
   environmentVariables {
     env('WORKSPACE_NAME', workspaceFolderName)
     env('PROJECT_NAME', projectFolderName)
+	
   }
   parameters{
-    stringParam("KEY",'',"Value")
+    stringParam("AWS_REGION",'',"Default AWS Region")
   }
   wrappers {
     preBuildCleanup()
@@ -137,7 +138,7 @@ doa17CreateDevelopmentGroup.with{
     env('PROJECT_NAME', projectFolderName)
   }
   parameters{
-    stringParam("KEY",'',"Value")
+    stringParam("AWS_REGION",'',"Default AWS Region")
   }
   wrappers {
     preBuildCleanup()
@@ -176,7 +177,7 @@ doa17CreateProductionGroup.with{
     env('PROJECT_NAME', projectFolderName)
   }
   parameters{
-    stringParam("KEY",'',"Value")
+    stringParam("AWS_REGION",'',"Default AWS Region")
   }
   wrappers {
     preBuildCleanup()
