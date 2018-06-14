@@ -31,17 +31,40 @@ doa17CodeBuild.with{
     env('PROJECT_NAME', projectFolderName)
   }
   parameters{
-    stringParam("KEY",'Description',"Value")
+    stringParam("AWS_REGION",'us-east-1',"Default AWS Region")
+    stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
+    stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
   }
   wrappers {
     preBuildCleanup()
     maskPasswords()
   }
   label("docker")
+  scm{
+    git{
+      remote{
+        url(applicationRepository)
+        credentials("adop-jenkins-master")
+      }
+      branch("*/master")
+    }
+  }
     steps {
     shell('''
 set +x
+export AWS_DEFAULT_REGION=$AWS_REGION
+echo "[INFO] Default region is set to $AWS_DEFAULT_REGION"
 
+echo "[INFO] Building Application Code"
+aws codebuild start-build --project-name ${ENVIRONMENT_NAME}-project
+sleep 60s
+
+echo "[INFO] Getting Code Build eTAG"
+BUILD_ETAG=$(aws s3api head-object --bucket doa17-${ENVIRONMENT_NAME} --key WebAppOutputArtifact.zip --query \'ETag\' --output text)
+echo "BUILD_ETAG=$BUILD_ETAG" >> properties_file.txt
+
+echo "[INFO] Registering Revision for eTAG ${BUILD_ETAG}"
+aws deploy register-application-revision --application-name ${ENVIRONMENT_NAME}-WebApp --description "Revison ${BUILD_NUMBER}" --s3-location bucket=${S3_BUCKET},key=WebAppOutputArtifact.zip,bundleType=zip,eTag=${BUILD_ETAG}
 set -x'''.stripMargin()
     )
   }
@@ -51,6 +74,7 @@ set -x'''.stripMargin()
         condition("UNSTABLE_OR_BETTER")
         parameters{
           currentBuild()
+		  propertiesFile('properties_file.txt')
         }
       }
     }
@@ -65,7 +89,10 @@ doa17CodeDeployDevelopment.with{
     env('PROJECT_NAME', projectFolderName)
   }
   parameters{
-    stringParam("KEY",'Description',"Value")
+     stringParam("AWS_REGION",'',"Default AWS Region")
+    stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
+    stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
+	stringParam("BUILD_ETAG",'',"Application Build eTAG")
   }
   wrappers {
     preBuildCleanup()
@@ -75,7 +102,13 @@ doa17CodeDeployDevelopment.with{
     steps {
     shell('''
 set +x
+export AWS_DEFAULT_REGION=$AWS_REGION
+echo "[INFO] Default region is set to $AWS_DEFAULT_REGION"
 
+echo "[INFO] Deploying Application to ${ENVIRONMENT_NAME}-DevWebApp"
+aws deploy create-deployment --application-name ${ENVIRONMENT_NAME}-WebApp --deployment-group-name ${ENVIRONMENT_NAME}-DevWebApp --description "Applicacion Build ${BUILD_NUMBER}" --s3-location bucket=${S3_BUCKET},key=WebAppOutputArtifact.zip,bundleType=zip,eTag=${BUILD_ETAG}
+
+sleep 30s
 set -x'''.stripMargin()
     )
   }
@@ -99,7 +132,10 @@ doa17CodeDeployProduction.with{
     env('PROJECT_NAME', projectFolderName)
   }
   parameters{
-    stringParam("KEY",'Description',"Value")
+    stringParam("AWS_REGION",'us-east-1',"Default AWS Region")
+    stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
+    stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
+
   }
   wrappers {
     preBuildCleanup()
@@ -109,7 +145,13 @@ doa17CodeDeployProduction.with{
     steps {
     shell('''
 set +x
+export AWS_DEFAULT_REGION=$AWS_REGION
+echo "[INFO] Default region is set to $AWS_DEFAULT_REGION"
 
+echo "[INFO] Deploying Application to ${ENVIRONMENT_NAME}-ProdWebApp"
+aws deploy create-deployment --application-name ${ENVIRONMENT_NAME}-WebApp --deployment-group-name ${ENVIRONMENT_NAME}-ProdWebApp --description "Applicacion Build ${BUILD_NUMBER}" --s3-location bucket=${S3_BUCKET},key=WebAppOutputArtifact.zip,bundleType=zip,eTag=${BUILD_ETAG}
+
+sleep 30s
 set -x'''.stripMargin()
     )
   }
