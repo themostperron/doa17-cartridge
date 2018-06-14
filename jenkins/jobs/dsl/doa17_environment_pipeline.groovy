@@ -103,7 +103,11 @@ doa17CreateApplication.with{
     stringParam("AWS_REGION",'',"Default AWS Region")
     stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
     stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
-
+	stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
+    stringParam("WEB_APP_PROFILE",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
+    stringParam("WEB_APP_SG",'',"Web App SG from DevOps-Workshop-Networking stack")
+    stringParam("PUBLIC_SUBNET",'',"Public Subnet from DevOps-Workshop-Networking stack")
+    stringParam("CODE_DEPLOY_ARN",'',"IAM Role ARN from DevopsWorkshop-raem-roles stack")
   }
   wrappers {
     preBuildCleanup()
@@ -144,7 +148,11 @@ doa17CreateDevelopmentGroup.with{
     stringParam("AWS_REGION",'',"Default AWS Region")
     stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
     stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
-
+    stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
+    stringParam("WEB_APP_PROFILE",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
+    stringParam("WEB_APP_SG",'',"Web App SG from DevOps-Workshop-Networking stack")
+    stringParam("PUBLIC_SUBNET",'',"Public Subnet from DevOps-Workshop-Networking stack")
+    stringParam("CODE_DEPLOY_ARN",'',"IAM Role ARN from DevopsWorkshop-raem-roles stack")
 }
   wrappers {
     preBuildCleanup()
@@ -186,7 +194,11 @@ doa17CreateProductionGroup.with{
     stringParam("AWS_REGION",'',"Default AWS Region")
     stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
     stringParam("S3_BUCKET",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
-
+   stringParam("ENVIRONMENT_NAME",'',"Name of your Environment")
+    stringParam("WEB_APP_PROFILE",'',"Web App Instance Profile from DevOps-Workshop-Networking stack")
+    stringParam("WEB_APP_SG",'',"Web App SG from DevOps-Workshop-Networking stack")
+    stringParam("PUBLIC_SUBNET",'',"Public Subnet from DevOps-Workshop-Networking stack")
+    stringParam("CODE_DEPLOY_ARN",'',"IAM Role ARN from DevopsWorkshop-raem-roles stack")
 }
   wrappers {
     preBuildCleanup()
